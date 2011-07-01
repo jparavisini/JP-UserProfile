@@ -30,7 +30,7 @@ hobby_skiing integer, // 1 = Yes, 0 = No
 		
 	}
 
-	public function createUser() {
+	public function createUser(array $data) {
 		$query = "INSERT INTO userinfo firstname,lastname,email,sex,city,state,comments,hobby_cycling,hobby_frisbee,hobby_skiing 
 		VALUES('$firstname', '$lastname', '$email', '$sex', '$city', '$state', '$comments', '$hobby_cycling', '$hobby_frisbee', '$hobby_skiing')";
 
@@ -45,7 +45,6 @@ hobby_skiing integer, // 1 = Yes, 0 = No
 	 * @author Joe Paravisini
 	 */
 	public function getUserData($id) {
-		(int)$id;
 		$data['firstname'] = 'Joe'.$id;
 		return $data;
 	}

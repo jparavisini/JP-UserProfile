@@ -40,7 +40,8 @@ switch ($action) {
 		break;
 
 	case 'new':
-	
+		$user = new UserProfile();
+		$id = $user->createUser($data);
 		$page_title = 'Create New Profile';
 		$content = '';
 		break;
