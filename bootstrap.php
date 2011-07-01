@@ -29,7 +29,7 @@ if (count($url) > 2) {
 	$action = $url[2];
 } 
 if (count($url) > 3) {
-	$params = array_slice($url,2);
+	$params = $url[3];
 }
 
 switch ($action) {
@@ -42,17 +42,19 @@ switch ($action) {
 	case 'new':
 	
 		$page_title = 'Create New Profile';
-		$content = "";
+		$content = '';
 		break;
 
 	case 'view':
+		$user = new UserProfile();
+		$data = $user->getUserData($params);
 		$page_title = 'View A Profile';
-		$content = "";
+		$content = $data['firstname'];
 		break;
 					
 	case 'edit':
 		$page_title = 'Edit A Profile';
-		$content = "";
+		$content = '';
 		break;
 		
 	case 'delete':

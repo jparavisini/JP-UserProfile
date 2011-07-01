@@ -56,7 +56,7 @@ require_once('bootstrap.php');
 	nav a:link, nav a:visited, nav a:hover, nav a:active {
 
 	text-decoration: none;
-}
+	}
 	footer {
 		width: 100%;
 		height: 100px;
