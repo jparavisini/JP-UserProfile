@@ -1,6 +1,6 @@
 <?php 
-require_once('bootstrap.php');
-
+require_once('config.php');
+require_once('router.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +31,7 @@ require_once('bootstrap.php');
 		padding: 10px;
 	}
 	header h1 {
-		margin: 10px auto;
+		margin: 10px ;
 		width: 150px;
 		font-color: 
 	}
@@ -85,6 +85,20 @@ require_once('bootstrap.php');
 	.clear {
 		clear:both;
 	}
+	
+	label {
+	width: 150px;
+	display: block;
+	float: left;
+	}
+	.checkbox {
+	width: 200px;
+	display: block;
+	float: left;
+	}
+	.checkbox label {
+	float: right;
+	}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
 	
@@ -100,10 +114,8 @@ require_once('bootstrap.php');
 				<h1><?=$site_title?></h1>
 				<nav>
 					<ul>
-					<li><a href="/userprofile">Home</a></li>
-					<li><a href="/userprofile/new">Create New Profile</a></li>
-					<li><a href="/userprofile/edit">Edit Profile</a></li>
-					<li><a href="/userprofile/delete">Delete Profile</a></li>
+					<li><a href="<?=$base_url?>">Home</a></li>
+					<li><a href="<?=$base_url?>/new">Create New Profile</a></li>
 					</ul>
 				</nav><br class="clear">
 			</header>
