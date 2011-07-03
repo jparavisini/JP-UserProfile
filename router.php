@@ -42,16 +42,16 @@ switch ($action) {
 		if (!isset($_POST['firstname'], $_POST['lastname'],$_POST['email'], $_POST['sex'], $_POST['city'], $_POST['state'])) {
 		$content = 'Missing Required Fields.<br><a href="javascript:history.go(-1);">Go Back</a>';
 		} else {
-		$data =  array ('firstname' 	=> mysql_real_escape_string($_POST['firstname']), 
-						'lastname' 		=> mysql_real_escape_string($_POST['lastname']),
-						'email' 		=> mysql_real_escape_string(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)),
-						'sex' 			=> mysql_real_escape_string($_POST['sex']),
-						'city' 			=> mysql_real_escape_string($_POST['city']),
-						'state' 		=> mysql_real_escape_string($_POST['state']),
-						'comments' 		=> mysql_real_escape_string(isset($_POST['comments'])),
-						'hobby_cycling' => mysql_real_escape_string(isset($_POST['hobby_cycling'])),
-						'hobby_frisbee' => mysql_real_escape_string(isset($_POST['hobby_frisbee'])),
-						'hobby_skiing' 	=> mysql_real_escape_string(isset($_POST['hobby_skiing']))
+		$data =  array ('firstname' 	=> $_POST['firstname'], 
+						'lastname' 		=> $_POST['lastname'],
+						'email' 		=> filter_var($_POST['email'], FILTER_VALIDATE_EMAIL),
+						'sex' 			=> $_POST['sex'],
+						'city' 			=> $_POST['city'],
+						'state' 		=> $_POST['state'],
+						'comments' 		=> $_POST['comments'],
+						'hobby_cycling' => isset($_POST['hobby_cycling']),
+						'hobby_frisbee' => isset($_POST['hobby_frisbee']),
+						'hobby_skiing' 	=> isset($_POST['hobby_skiing'])
 						);
 		
 		
