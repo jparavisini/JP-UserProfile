@@ -1,6 +1,7 @@
 <?php 
-require_once('config.php');
 require_once('router.php');
+// Site-wide View Defaults
+$site_title = 'UserProfile v0.1a';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,8 +115,9 @@ require_once('router.php');
 				<h1><?=$site_title?></h1>
 				<nav>
 					<ul>
-					<li><a href="<?=$base_url?>">Home</a></li>
-					<li><a href="<?=$base_url?>/new">Create New Profile</a></li>
+					<li><a href="/userprofile">Home</a></li>
+					<li><a href="/userprofile/new">Create New Profile</a></li>
+					<li><a href="/userprofile/view">View All Profiles</a></li>
 					</ul>
 				</nav><br class="clear">
 			</header>

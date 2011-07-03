@@ -20,76 +20,154 @@
 	private $hobby_cycling;
 	private $hobby_frisbee;
 	private $hobby_skiing;
+
+	private $genders = array('M' => 'Male', 'F' => 'Female');
+	private $states = array('AL' => 'Alabama',
+                'AK' => 'Alaska',  
+                'AZ' => 'Arizona',  
+                'AR' => 'Arkansas',  
+                'CA' => 'California',  
+                'CO' => 'Colorado',  
+                'CT' => 'Connecticut',  
+                'DE' => 'Delaware',  
+                'DC' => 'District Of Columbia',  
+                'FL' => 'Florida',  
+                'GA' => 'Georgia',  
+                'HI' => 'Hawaii',  
+                'ID' => 'Idaho',  
+                'IL' => 'Illinois',  
+                'IN' => 'Indiana',  
+                'IA' => 'Iowa',  
+                'KS' => 'Kansas',  
+                'KY' => 'Kentucky',  
+                'LA' => 'Louisiana',  
+                'ME' => 'Maine',  
+                'MD' => 'Maryland',  
+                'MA' => 'Massachusetts',  
+                'MI' => 'Michigan',  
+                'MN' => 'Minnesota',  
+                'MS' => 'Mississippi',  
+                'MO' => 'Missouri',  
+                'MT' => 'Montana',
+                'NE' => 'Nebraska',
+                'NV' => 'Nevada',
+                'NH' => 'New Hampshire',
+                'NJ' => 'New Jersey',
+                'NM' => 'New Mexico',
+                'NY' => 'New York',
+                'NC' => 'North Carolina',
+                'ND' => 'North Dakota',
+                'OH' => 'Ohio',  
+                'OK' => 'Oklahoma',  
+                'OR' => 'Oregon',  
+                'PA' => 'Pennsylvania',  
+                'RI' => 'Rhode Island',  
+                'SC' => 'South Carolina',  
+                'SD' => 'South Dakota',
+                'TN' => 'Tennessee',  
+                'TX' => 'Texas',  
+                'UT' => 'Utah',  
+                'VT' => 'Vermont',  
+                'VA' => 'Virginia',  
+                'WA' => 'Washington',  
+                'WV' => 'West Virginia',  
+                'WI' => 'Wisconsin',  
+                'WY' => 'Wyoming');
+	private $hobbies = array('hobby_cycling' => 'Cycling', 'hobby_frisbee' => 'Frisbee', 'hobby_skiing' => 'Skiing');
+	
+	private $db_host = 'localhost';
+	private $db_port = '3306';
+	private $db_user = 'root';
+	private $db_pass = '';
+	private $db_db 	 = 'userprofile';
 	
 	function __construct() {
 		
 	}
-
+	
+	/**
+	 * createUser
+	 *
+	 * @param array $data 
+	 * @return integer
+	 * @author Joe Paravisini
+	 */
 	public function createUser(array $data) {
-	mysql_connect('localhost', 'root');
-	mysql_selectdb('userprofile');
-	
-	$this->firstname = $data['firstname'];
-	$this->lastname = $data['lastname']; 
-	$this->email = $data['email'];
-	$this->sex = $data['sex']; 
-	$this->city = $data['city']; 
-	$this->state = $data['state']; 
-	$this->comments = $data['comments']; 
-	$this->hobby_cycling = $data['hobby_cycling']; 
-	$this->hobby_frisbee = $data['hobby_frisbee']; 
-	$this->hobby_skiing = $data['hobby_skiing'];
+		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db, $con);
+		
+		$this->firstname = $data['firstname'];
+		$this->lastname = $data['lastname']; 
+		$this->email = $data['email'];
+		$this->sex = $data['sex']; 
+		$this->city = $data['city']; 
+		$this->state = $data['state']; 
+		$this->comments = $data['comments']; 
+		$this->hobby_cycling = $data['hobby_cycling']; 
+		$this->hobby_frisbee = $data['hobby_frisbee']; 
+		$this->hobby_skiing = $data['hobby_skiing'];
 
-	$query = "INSERT INTO users (firstname,lastname,email,sex,city,state,comments,hobby_cycling,hobby_frisbee,hobby_skiing)
-	VALUES ('$this->firstname', 
-	'$this->lastname', 
-	'$this->email', 
-	'$this->sex', 
-	'$this->city', 
-	'$this->state', 
-	'$this->comments',
-	'$this->hobby_cycling', 
-	'$this->hobby_frisbee', 
-	'$this->hobby_skiing')";
-	mysql_query($query) or die(mysql_error());
-	$this->id = mysql_insert_id();
-	mysql_close();
-	
-	// Send Welcome Email
-	$message = 'Dear '.$this->firstname.',\n 
-	Welcome to User Profile!\n
-	You can view and update your profile by visiting http://joeparavisini.com/userprofile/view/'.$this->id.' \n
-	Good luck!\n' ;
-	$this->userMail($this->email, 'Welcome to User Profile!', $message);
-	return $this->id;
+		$query = "INSERT INTO users (firstname,lastname,email,sex,city,state,comments,hobby_cycling,hobby_frisbee,hobby_skiing)
+		VALUES ('$this->firstname', 
+		'$this->lastname', 
+		'$this->email', 
+		'$this->sex', 
+		'$this->city', 
+		'$this->state', 
+		'$this->comments',
+		'$this->hobby_cycling', 
+		'$this->hobby_frisbee', 
+		'$this->hobby_skiing')";
+
+		mysql_query($query, $con) or die(mysql_error($con));
+		$this->id = mysql_insert_id($con);
+		mysql_close($con);
+		
+		// Send Welcome Email
+		$message = 'Dear '.$this->firstname.',\n 
+		Welcome to User Profile!\n
+		You can view and update your profile by visiting http://joeparavisini.com/userprofile/view/'.$this->id.' \n
+		Good luck!\n' ;
+		$this->userMail($this->email, 'Welcome to User Profile!', $message);
+		return $this->id;
 	}
+	
 	/**
 	 * getUserData
+	 *
+	 * @param string $id 
+	 * @return string
+	 * @author Joe Paravisini
+	 */
+	public function getUserData($id) {
+		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db, $con);
+
+		$query = "SELECT * FROM users WHERE id=$id LIMIT 1";
+		$sql = mysql_query($query,$con) or die(mysql_error($con));
+		$results = mysql_fetch_assoc($sql);
+		
+		$content = '<p><a href="/userprofile/edit/'.$id.'">Edit Your Profile</a> - <a href="/userprofile/delete/'.$id.'">Delete Your Profile</a></p>';
+
+		$content .= '<p><strong>First Name:</strong>'.$results['firstname'].'<br>';
+		$content .= '<strong>Last Name:</strong>'.$results['lastname'].'<br>';
+		$content .= '<strong>E-Mail Address:</strong>'.$results['email'].'<br>';
+		$content .= '<strong>Gender:</strong>'.$results['sex'].'<br>';
+		$content .= '<strong>City:</strong>'.$results['city'].'<br>';
+		$content .= '<strong>State:</strong>'.$results['state'].'<br>';
+		$content .= '<strong>Hobbies:</strong>'.$results['hobby_cycling'].'</p>';
+		mysql_close($con);
+		
+		return $content;
+	}
+	
+	/**
+	 * getUserDataArray
 	 *
 	 * @param string $id 
 	 * @return array
 	 * @author Joe Paravisini
 	 */
-	public function getUserData($id) {
-	mysql_connect('localhost', 'root');
-	mysql_selectdb('userprofile');
-	$query = "SELECT * FROM users WHERE id=$id LIMIT 1";
-	$sql = mysql_query($query) or die(mysql_error());
-	$results = mysql_fetch_assoc($sql);
-	
-	$content = '<p><a href="/userprofile/edit/'.$id.'">Edit Your Profile</a> - <a href="/userprofile/delete/'.$id.'">Delete Your Profile</a></p>';
-
-	$content .= '<p><strong>First Name:</strong>'.$results['firstname'].'<br>';
-	$content .= '<strong>Last Name:</strong>'.$results['lastname'].'<br>';
-	$content .= '<strong>E-Mail Address:</strong>'.$results['email'].'<br>';
-	$content .= '<strong>Gender:</strong>'.$results['sex'].'<br>';
-	$content .= '<strong>City:</strong>'.$results['city'].'<br>';
-	$content .= '<strong>State:</strong>'.$results['state'].'<br>';
-	$content .= '<strong>Hobbies:</strong>'.$results['hobby_cycling'].'</p>';
-	
-	return $content;
-	}
-	
 	public function getUserDataArray($id) {
 		mysql_connect('localhost', 'root');
 		mysql_selectdb('userprofile');
@@ -99,11 +177,17 @@
 		return $results;
 		}
 	
+	/**
+	 * getAllUsersData
+	 *
+	 * @return string
+	 * @author Joe Paravisini
+	 */
 	public function getAllUsersData(){
-		mysql_connect('localhost', 'root');
-		mysql_selectdb('userprofile');
+		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db, $con);
 		$query = "SELECT * FROM users";
-		$sql = mysql_query($query) or die(mysql_error());
+		$sql = mysql_query($query,$con) or die(mysql_error($con));
 		$results = '<ul>';
 		while($row = mysql_fetch_array($sql))
 		{
@@ -113,134 +197,209 @@
 		$results .= "<li><a href='/userprofile/view/$id'>$firstname $lastname</a></li>";
 		}
 		$results .= '</ul>';
-		
+		mysql_close($con);
 		return $results;
 	}
 	
+	/**
+	 * updateUser
+	 *
+	 * @param integer $id, array $data 
+	 * @return integer
+	 * @author Joe Paravisini
+	 */
+	public function updateUser($id, array $data) {
+		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db, $con);
+		
+		$this->firstname = $data['firstname'];
+		$this->lastname = $data['lastname']; 
+		$this->email = $data['email'];
+		$this->sex = $data['sex']; 
+		$this->city = $data['city']; 
+		$this->state = $data['state']; 
+		$this->comments = $data['comments'];
+		$this->hobby_cycling = $data['hobby_cycling']; 
+		$this->hobby_frisbee = $data['hobby_frisbee']; 
+		$this->hobby_skiing = $data['hobby_skiing'];
+
+		$query = "UPDATE users SET firstname='$this->firstname',
+		lastname='$this->lastname',
+		email='$this->email',
+		sex='$this->sex',
+		city='$this->city',
+		state='$this->state',
+		comments='$this->comments',
+		hobby_cycling='$this->hobby_cycling',
+		hobby_frisbee='$this->hobby_frisbee',
+		hobby_skiing='$this->hobby_skiing' WHERE id='$id'";
+		
+		mysql_query($query, $con) or die(mysql_error($con));
+		mysql_close($con);
+		return $id;
+	}
+	
+	/**
+	 * deleteUser
+	 *
+	 * @param integer $id
+	 * @return boolean
+	 * @author Joe Paravisini
+	 */
 	public function deleteUser($id) {
 		$data = $this->getUserDataArray($id);
 		$id = $data['id'];
 		$firstname = $data['firstname'];
 		$hash = md5($data['email'].$id.date('YMD'));
 		$message = "Hello $firstname, \n Please click the link below to confirm deletion of your account: \n\n
-		http://joeparavisini.com/userprofile/deleteconfirm/$id/$hash
-		";
-		$content = '<p>Sorry to see you go! For security, a confirmation e-mail has been sent to you. Clicking the link in that e-mail will complete your account deletion.<br><a href="/userprofile">Go Home</a></p>
-		';
+		http://joeparavisini.com/userprofile/deleteconfirm/$id/$hash";
+		
+		$content = '<p>Sorry to see you go! For security, a confirmation e-mail has been sent to you. Clicking the link in that e-mail will complete your account deletion.<br><a href="/userprofile">Go Home</a></p>';
+		
 		$this->userMail($data['email'], 'Confirm deletion of your account', $message);
-		return $content;
+		return TRUE;
 	}
-	
+	/**
+	 * deleteUserConfirm
+	 *
+	 * @param integer $id, string $hash
+	 * @return boolean
+	 * @author Joe Paravisini
+	 */
 	public function deleteUserConfirm($id,$hash) {
 		$data = $this->getUserDataArray($id);
 		$key = md5($data['email'].$data['id'].date('YMD'));
 		if ($key == $hash) {
-		mysql_connect('localhost', 'root');
-		mysql_selectdb('userprofile');
+		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db, $con);
 		$query = "DELETE FROM users WHERE id='$id'";
-		mysql_query($query) or die(mysql_error());
-		mysql_close();
-		return 'Successfully deleted '.$data['firstname'];
+		mysql_query($query,$con) or die(mysql_error($con));
+		mysql_close($con);
+		return true;
+		//return 'Successfully deleted '.$data['firstname'];
 		} else {
-		return 'Invalid or expired confirmation link.';
+		//return 'Invalid or expired confirmation link.';
+		return $false;
 		}
 	}
-	public function userForm(array $data) {
-	$action = '/userprofile/edit/'. $data['id'];
-	$firstname = $data['firstname'];
-	$lastname = $data['lastname'];
-	$email = $data['email'];
-	$sex = $data['sex'];
-	$city = $data['city'];
-	$state = $data['state'];
-	$comments = $data['comments'];
-	$hobby_cycling = $data['hobby_cycling'];
-	$hobby_frisbee = $data['hobby_frisbee'];
-	$hobby_skiing = $data['hobby_skiing'];
+	
+	/**
+	 * userForm
+	 *
+	 * @param array $data
+	 * @return boolean
+	 * @author Joe Paravisini
+	 */
+	public function userForm() {
+	$numargs = func_num_args();
+	if ($numargs > 0) {
+		$action = '/userprofile/edit/'. $data['id'];
+		$firstname = $data['firstname'];
+		$lastname = $data['lastname'];
+		$email = $data['email'];
+		$sex = $data['sex'];
+		$city = $data['city'];
+		$state = $data['state'];
+		$comments = $data['comments'];
+		$hobby_cycling = $data['hobby_cycling'];
+		$hobby_frisbee = $data['hobby_frisbee'];
+		$hobby_skiing = $data['hobby_skiing'];
+		
+		$content = "
+			<form action='$action' method='POST'>
+			<label for='firstname'>First Name: </label><input type='text' name='firstname' id='firstname' value='$firstname'><br>
+			<label for='lastname'>Last Name: </label><input type='text' name='lastname' id='lastname' value='$lastname'><br>
+			<label for='email'>E-Mail Address: </label><input type='text' name='email' id='email' value='$email'><br>";
+			
+		$content .= "<label for='sex'>Gender: </label><select name='sex'><option value=''></option>";
+		
+		foreach ($this->genders as $code => $label) {
+			if ($data['sex'] == $code){ 
+				$content .= "<option value='$code' selected>$label</option>";
+			}else {
+				$content .= "<option value='$code'>$label</option>";
+			}
+		}
+		$content .=	"</select><br>";
+			
+		$content .= "<label for='city'>City</label><input type='text' name='city' id='city' value='$city'><br>";
+		
+		$content .= "<label for='state'>State</label><select name='state' id='state'>";
+		foreach ($this->states as $code => $label) {
+			if ($state == $code){ 
+				$content .= "<option value='$code' selected>$label</option>";
+			}else {
+				$content .= "<option value='$code'>$label</option> ";
+			}
+		}
+		$content .= "
+			</select><br>
+			<label for='comments'>Comments</label><textarea name='comments' id='comments'>$comments</textarea><br>
+			<label>Hobbies</label>
+			<div class='checkbox'>";
 
-	$content = "
-		<form action='$action' method='POST'>
-		<label for='firstname'>First Name: </label><input type='text' name='firstname' id='firstname' value='$firstname'><br>
-		<label for='lastname'>Last Name: </label><input type='text' name='lastname' id='lastname' value='$lastname'><br>
-		<label for='email'>E-Mail Address: </label><input type='text' name='email' id='email' value='$email'><br>
-		<label for='sex'>Gender: </label><select name='sex'>
-			<option value=''></option>
-			<option value='M'>Male</option>
-			<option value='F'>Female</option>
-		</select><br>
-		<label for='city'>City</label><input type='text' name='city' id='city' value='$city'><br>
-		<label for='state'>State</label><select name='state' id='state'>
-			<option value='AL'>Alabama</option> 
-			<option value='AK'>Alaska</option> 
-			<option value='AZ'>Arizona</option> 
-			<option value='AR'>Arkansas</option> 
-			<option value='CA'>California</option> 
-			<option value='CO'>Colorado</option> 
-			<option value='CT'>Connecticut</option> 
-			<option value='DE'>Delaware</option> 
-			<option value='DC'>District Of Columbia</option> 
-			<option value='FL'>Florida</option> 
-			<option value='GA'>Georgia</option> 
-			<option value='HI'>Hawaii</option> 
-			<option value='ID'>Idaho</option> 
-			<option value='IL'>Illinois</option> 
-			<option value='IN'>Indiana</option> 
-			<option value='IA'>Iowa</option> 
-			<option value='KS'>Kansas</option> 
-			<option value='KY'>Kentucky</option> 
-			<option value='LA'>Louisiana</option> 
-			<option value='ME'>Maine</option> 
-			<option value='MD'>Maryland</option> 
-			<option value='MA'>Massachusetts</option> 
-			<option value='MI'>Michigan</option> 
-			<option value='MN'>Minnesota</option> 
-			<option value='MS'>Mississippi</option> 
-			<option value='MO'>Missouri</option> 
-			<option value='MT'>Montana</option> 
-			<option value='NE'>Nebraska</option> 
-			<option value='NV'>Nevada</option> 
-			<option value='NH'>New Hampshire</option> 
-			<option value='NJ'>New Jersey</option> 
-			<option value='NM'>New Mexico</option> 
-			<option value='NY'>New York</option> 
-			<option value='NC'>North Carolina</option> 
-			<option value='ND'>North Dakota</option> 
-			<option value='OH'>Ohio</option> 
-			<option value='OK'>Oklahoma</option> 
-			<option value='OR'>Oregon</option> 
-			<option value='PA'>Pennsylvania</option> 
-			<option value='RI'>Rhode Island</option> 
-			<option value='SC'>South Carolina</option> 
-			<option value='SD'>South Dakota</option> 
-			<option value='TN'>Tennessee</option> 
-			<option value='TX'>Texas</option> 
-			<option value='UT'>Utah</option> 
-			<option value='VT'>Vermont</option> 
-			<option value='VA'>Virginia</option> 
-			<option value='WA'>Washington</option> 
-			<option value='WV'>West Virginia</option> 
-			<option value='WI'>Wisconsin</option> 
-			<option value='WY'>Wyoming</option>
-		</select><br>
-		<label for=''>Comments</label><textarea name='' id=''>$comments</textarea><br>
-		<label>Hobbies</label>
-		<div class='checkbox'>
-		<input type='checkbox' name='hobby_cycling' id='hobby_cycling' > <label for='hobby_cycling'>Cycling</label><br>
-		<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee'> <label for='hobby_frisbee'>Frisbee</label><br>
-		<input type='checkbox' name='hobby_skiing' id='hobby_skiing'> <label for='hobby_skiing'>Skiing</label><br></div>
-		<br class='clear'>
-		<input type='submit' value='Submit'><br>
-		</form>";
+		$content .="	<input type='checkbox' name='hobby_cycling' id='hobby_cycling' > <label for='hobby_cycling'>Cycling</label><br>
+			<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee'> <label for='hobby_frisbee'>Frisbee</label><br>
+			<input type='checkbox' name='hobby_skiing' id='hobby_skiing'> <label for='hobby_skiing'>Skiing</label><br></div>
+			<br class='clear'>
+			<input type='submit' value='Submit'>
+			</form><br><br>";
+	} else {
+		$action = '/userprofile/new/';
+		$firstname = '';
+		$lastname = '';
+		$email = '';
+		$sex = '';
+		$city = '';
+		$state = '';
+		$comments = '';
+		$hobby_cycling = '';
+		$hobby_frisbee = '';
+		$hobby_skiing = '';
+		$content = "
+			<form action='$action' method='POST'>
+			<label for='firstname'>First Name: </label><input type='text' name='firstname' id='firstname'><br>
+			<label for='lastname'>Last Name: </label><input type='text' name='lastname' id='lastname'><br>
+			<label for='email'>E-Mail Address: </label><input type='text' name='email' id='email'><br>";
+			
+		$content .= "<label for='sex'>Gender: </label><select name='sex'><option value=''></option>";
+		
+		foreach ($this->genders as $code => $label) {
+				$content .= "<option value='$code'>$label</option>";
+		}
+		$content .=	"</select><br>";
+			
+		$content .= "<label for='city'>City</label><input type='text' name='city' id='city'><br>";
+		
+		$content .= "<label for='state'>State</label><select name='state' id='state'>";
+		foreach ($this->states as $code => $label) {
+				$content .= "<option value='$code'>$label</option> ";
+		}
+		$content .= "
+			</select><br>
+			<label for='comments'>Comments</label><textarea name='comments' id='comments'></textarea><br>
+			<label>Hobbies</label>
+			<div class='checkbox'>";
+
+		$content .="	<input type='checkbox' name='hobby_cycling' id='hobby_cycling' > <label for='hobby_cycling'>Cycling</label><br>
+			<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee'> <label for='hobby_frisbee'>Frisbee</label><br>
+			<input type='checkbox' name='hobby_skiing' id='hobby_skiing'> <label for='hobby_skiing'>Skiing</label><br></div>
+			<br class='clear'>
+			<input type='submit' value='Submit'>
+			</form><br><br>";
+	}
+		
 		return $content;
 	}
+	
 	private function userMail($to, $subject, $message) {
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'To:' . $to . "\r\n";
-	$headers .= 'From: User Profiles <no-reply@joeparavisini.com>' . "\r\n";
-	$headers .= 'Bcc: jp@julyseven.com' . "\r\n";
-	return $message;
-//	mail($to, $subject, $message, $headers);
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+		$headers .= 'To:' . $to . "\r\n";
+		$headers .= 'From: User Profiles <no-reply@joeparavisini.com>' . "\r\n";
+		$headers .= 'Bcc: jp@julyseven.com' . "\r\n";
+		return $message;
+	//	mail($to, $subject, $message, $headers);
 	}
 	
 }

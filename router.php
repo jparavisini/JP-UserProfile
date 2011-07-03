@@ -6,11 +6,10 @@
  * @version $Id$
  * @copyright Joe Paravisini, 30 June, 2011
  **/
-require_once('config.php');
 require_once('UserProfile.php');
 
-// URL Mapping
 
+// URL Mapping
 $action = 'index';
 $resource = 0;
 $params = '';
@@ -61,81 +60,8 @@ switch ($action) {
 			header ("Location: http://localhost/userprofile/view/$id");
 			}
 		} elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-
-		$content = '
-		<form action="/userprofile/new" method="POST">
-		<label for="firstname">First Name: </label><input type="text" name="firstname" id="firstname"><br>
-		<label for="lastname">Last Name: </label><input type="text" name="lastname" id="lastname"><br>
-		<label for="email">E-Mail Address: </label><input type="text" name="email" id="email"><br>
-		<label for="sex">Gender: </label><select name="sex">
-			<option value=""></option>
-			<option value="M">Male</option>
-			<option value="F">Female</option>
-		</select><br>
-		<label for="city">City</label><input type="text" name="city" id="city"><br>
-		<label for="state">State</label><select name="state" id="state">
-			<option value="" selected="selected">Select a State</option> 
-			<option value="AL">Alabama</option> 
-			<option value="AK">Alaska</option> 
-			<option value="AZ">Arizona</option> 
-			<option value="AR">Arkansas</option> 
-			<option value="CA">California</option> 
-			<option value="CO">Colorado</option> 
-			<option value="CT">Connecticut</option> 
-			<option value="DE">Delaware</option> 
-			<option value="DC">District Of Columbia</option> 
-			<option value="FL">Florida</option> 
-			<option value="GA">Georgia</option> 
-			<option value="HI">Hawaii</option> 
-			<option value="ID">Idaho</option> 
-			<option value="IL">Illinois</option> 
-			<option value="IN">Indiana</option> 
-			<option value="IA">Iowa</option> 
-			<option value="KS">Kansas</option> 
-			<option value="KY">Kentucky</option> 
-			<option value="LA">Louisiana</option> 
-			<option value="ME">Maine</option> 
-			<option value="MD">Maryland</option> 
-			<option value="MA">Massachusetts</option> 
-			<option value="MI">Michigan</option> 
-			<option value="MN">Minnesota</option> 
-			<option value="MS">Mississippi</option> 
-			<option value="MO">Missouri</option> 
-			<option value="MT">Montana</option> 
-			<option value="NE">Nebraska</option> 
-			<option value="NV">Nevada</option> 
-			<option value="NH">New Hampshire</option> 
-			<option value="NJ">New Jersey</option> 
-			<option value="NM">New Mexico</option> 
-			<option value="NY">New York</option> 
-			<option value="NC">North Carolina</option> 
-			<option value="ND">North Dakota</option> 
-			<option value="OH">Ohio</option> 
-			<option value="OK">Oklahoma</option> 
-			<option value="OR">Oregon</option> 
-			<option value="PA">Pennsylvania</option> 
-			<option value="RI">Rhode Island</option> 
-			<option value="SC">South Carolina</option> 
-			<option value="SD">South Dakota</option> 
-			<option value="TN">Tennessee</option> 
-			<option value="TX">Texas</option> 
-			<option value="UT">Utah</option> 
-			<option value="VT">Vermont</option> 
-			<option value="VA">Virginia</option> 
-			<option value="WA">Washington</option> 
-			<option value="WV">West Virginia</option> 
-			<option value="WI">Wisconsin</option> 
-			<option value="WY">Wyoming</option>
-		</select><br>
-		<label for="">Comments</label><textarea name="" id=""></textarea><br>
-		<label>Hobbies</label>
-		<div class="checkbox"><input type="checkbox" name="hobby_cycling" id="hobby_cycling"> <label for="hobby_cycling">Cycling</label><br>
-		<input type="checkbox" name="hobby_frisbee" id="hobby_frisbee"> <label for="hobby_frisbee">Frisbee</label><br>
-		<input type="checkbox" name="hobby_skiing" id="hobby_skiing"> <label for="hobby_skiing">Skiing</label><br></div>
-		<br class="clear">
-		<input type="submit" value="Submit"><br>
-		</form>
-		';
+		$user = new UserProfile();
+		$content = $user->userForm();
 		}
 		break;
 
@@ -165,7 +91,7 @@ switch ($action) {
 						'sex' 			=> mysql_real_escape_string($_POST['sex']),
 						'city' 			=> mysql_real_escape_string($_POST['city']),
 						'state' 		=> mysql_real_escape_string($_POST['state']),
-						'comments' 		=> mysql_real_escape_string(isset($_POST['comments'])),
+						'comments' 		=> mysql_real_escape_string($_POST['comments']),
 						'hobby_cycling' => mysql_real_escape_string(isset($_POST['hobby_cycling'])),
 						'hobby_frisbee' => mysql_real_escape_string(isset($_POST['hobby_frisbee'])),
 						'hobby_skiing' 	=> mysql_real_escape_string(isset($_POST['hobby_skiing']))
@@ -173,7 +99,7 @@ switch ($action) {
 		
 		
 			$user = new UserProfile();
-			$id = $user->createUser($data);
+			$id = $user->updateUser($resource,$data);
 			header ("Location: http://localhost/userprofile/view/$id");
 			}
 		} elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
