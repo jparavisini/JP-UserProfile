@@ -124,10 +124,10 @@
 		mysql_close($con);
 		
 		// Send Welcome Email
-		$message = 'Dear '.$this->firstname.',\n 
-		Welcome to User Profile!\n
-		You can view and update your profile by visiting http://joeparavisini.com/userprofile/view/'.$this->id.' \n
-		Good luck!\n' ;
+		$message = 'Dear '.$this->firstname.', 
+		Welcome to User Profile!
+		You can view and update your profile by visiting http://joeparavisini.com/userprofile/view/'.$this->id.'
+		Good luck!' ;
 		$this->userMail($this->email, 'Welcome to User Profile!', $message);
 		return $this->id;
 	}
@@ -265,8 +265,9 @@
 		$id = $data['id'];
 		$firstname = $data['firstname'];
 		$hash = md5($data['email'].$id.date('YMD'));
-		$message = "Hello $firstname, \n Please click the link below to confirm deletion of your account: \n\n
-		http://joeparavisini.com/userprofile/deleteconfirm/$id/$hash";
+		$message = "Hello $firstname, 
+Please click the link below to confirm deletion of your account: 
+http://joeparavisini.com/userprofile/deleteconfirm/$id/$hash";
 		
 		$content = '<p>Sorry to see you go! For security, a confirmation e-mail has been sent to you. Clicking the link in that e-mail will complete your account deletion.<br><a href="/userprofile">Go Home</a></p>';
 		
