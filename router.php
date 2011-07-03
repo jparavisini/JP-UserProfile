@@ -3,9 +3,10 @@
  * 
  *
  * @author Joe Paravisini
- * @version $Id$
+ * @version 0.1a
  * @copyright Joe Paravisini, 30 June, 2011
  **/
+
 require_once('UserProfile.php');
 
 
@@ -39,7 +40,7 @@ switch ($action) {
 		
 		if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		// Check to see if it's a valid submission
-		if (!isset($_POST['firstname'], $_POST['lastname'],$_POST['email'], $_POST['sex'], $_POST['city'], $_POST['state'])) {
+		if (!isset($_POST['firstname'], $_POST['lastname'],$_POST['email'], $_POST['sex'], $_POST['city'], $_POST['state']) AND filter_var($_POST['email'],FILTER_VALIDATE_EMAIL) {
 		$content = 'Missing Required Fields.<br><a href="javascript:history.go(-1);">Go Back</a>';
 		} else {
 		$data =  array ('firstname' 	=> $_POST['firstname'], 
@@ -123,9 +124,9 @@ switch ($action) {
 		$page_title = 'Goodbye!';
 		$user = new UserProfile();
 		if ( $user->deleteUserConfirm($resource,$params)) {
-		$content = "Successfully Deleted Account.";
+			$content = "Successfully Deleted Account.";
 		} else {
-                $content = "Something went wrong.";
+            $content = "Something went wrong.";
 		}
 		break;
 		
@@ -149,4 +150,3 @@ switch ($action) {
 		$content = '<p>Not sure what happened, but whatever you were looking for is not here. Sorry!</p>';
 		break;
 }
-

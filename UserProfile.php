@@ -22,64 +22,25 @@
 	private $hobby_skiing;
 
 	private $genders = array('M' => 'Male', 'F' => 'Female');
-	private $states = array('AL' => 'Alabama',
-                'AK' => 'Alaska',  
-                'AZ' => 'Arizona',  
-                'AR' => 'Arkansas',  
-                'CA' => 'California',  
-                'CO' => 'Colorado',  
-                'CT' => 'Connecticut',  
-                'DE' => 'Delaware',  
-                'DC' => 'District Of Columbia',  
-                'FL' => 'Florida',  
-                'GA' => 'Georgia',  
-                'HI' => 'Hawaii',  
-                'ID' => 'Idaho',  
-                'IL' => 'Illinois',  
-                'IN' => 'Indiana',  
-                'IA' => 'Iowa',  
-                'KS' => 'Kansas',  
-                'KY' => 'Kentucky',  
-                'LA' => 'Louisiana',  
-                'ME' => 'Maine',  
-                'MD' => 'Maryland',  
-                'MA' => 'Massachusetts',  
-                'MI' => 'Michigan',  
-                'MN' => 'Minnesota',  
-                'MS' => 'Mississippi',  
-                'MO' => 'Missouri',  
-                'MT' => 'Montana',
-                'NE' => 'Nebraska',
-                'NV' => 'Nevada',
-                'NH' => 'New Hampshire',
-                'NJ' => 'New Jersey',
-                'NM' => 'New Mexico',
-                'NY' => 'New York',
-                'NC' => 'North Carolina',
-                'ND' => 'North Dakota',
-                'OH' => 'Ohio',  
-                'OK' => 'Oklahoma',  
-                'OR' => 'Oregon',  
-                'PA' => 'Pennsylvania',  
-                'RI' => 'Rhode Island',  
-                'SC' => 'South Carolina',  
-                'SD' => 'South Dakota',
-                'TN' => 'Tennessee',  
-                'TX' => 'Texas',  
-                'UT' => 'Utah',  
-                'VT' => 'Vermont',  
-                'VA' => 'Virginia',  
-                'WA' => 'Washington',  
-                'WV' => 'West Virginia',  
-                'WI' => 'Wisconsin',  
-                'WY' => 'Wyoming');
+	private $states = array('AL' => 'Alabama', 'AK' => 'Alaska',  'AZ' => 'Arizona',  'AR' => 'Arkansas',  'CA' => 'California',
+							'CO' => 'Colorado',  'CT' => 'Connecticut',  'DE' => 'Delaware',  'DC' => 'District Of Columbia',
+							'FL' => 'Florida',  'GA' => 'Georgia',  'HI' => 'Hawaii',  'ID' => 'Idaho',  'IL' => 'Illinois',
+							'IN' => 'Indiana',  'IA' => 'Iowa',  'KS' => 'Kansas',  'KY' => 'Kentucky',  'LA' => 'Louisiana',
+							'ME' => 'Maine',  'MD' => 'Maryland',  'MA' => 'Massachusetts',  'MI' => 'Michigan',  'MN' => 'Minnesota',
+							'MS' => 'Mississippi',  'MO' => 'Missouri',  'MT' => 'Montana', 'NE' => 'Nebraska', 'NV' => 'Nevada',
+							'NH' => 'New Hampshire', 'NJ' => 'New Jersey', 'NM' => 'New Mexico', 'NY' => 'New York', 'NC' => 'North Carolina',
+							'ND' => 'North Dakota', 'OH' => 'Ohio',  'OK' => 'Oklahoma',  'OR' => 'Oregon',  'PA' => 'Pennsylvania',
+							'RI' => 'Rhode Island',  'SC' => 'South Carolina',  'SD' => 'South Dakota', 'TN' => 'Tennessee',  'TX' => 'Texas',
+							'UT' => 'Utah',  'VT' => 'Vermont',  'VA' => 'Virginia',  'WA' => 'Washington',  'WV' => 'West Virginia',
+							'WI' => 'Wisconsin',  'WY' => 'Wyoming');
+							
 	private $hobbies = array('hobby_cycling' => 'Cycling', 'hobby_frisbee' => 'Frisbee', 'hobby_skiing' => 'Skiing');
 	
-        private $db_host = 'localhost';
-        private $db_port = '3306';
-        private $db_user = 'userprofile';
-        private $db_pass = '8fh234irf89h';
-        private $db_db   = 'userprofile';
+	private $db_host = 'localhost';
+	private $db_port = '3306';
+	private $db_user = 'userprofile';
+	private $db_pass = '8fh234irf89h';
+	private $db_db   = 'userprofile';
 	
 	function __construct() {
 		
@@ -408,13 +369,25 @@ http://joeparavisini.com/userprofile/deleteconfirm/$id/$hash";
 		
 		return $content;
 	}
-	
+	/**
+	 * userMail
+	 *
+	 * @param string $to 
+	 * @param string $subject 
+	 * @param string $message 
+	 * @return bool
+	 * @author Joe Paravisini
+	 */
 	private function userMail($to, $subject, $message) {
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 		$headers .= 'To:' . $to . "\r\n";
 		$headers .= 'From: User Profiles <no-reply@joeparavisini.com>' . "\r\n";
-		mail($to, $subject, $message, $headers);
+		if (mail($to, $subject, $message, $headers)) {
+			return TRUE;
+		} else {
+			return FALSE;
+		};
 	}
 	
 }

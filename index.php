@@ -101,13 +101,6 @@ $site_title = 'UserProfile v0.1a';
 	float: right;
 	}
 	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
-	
-	<script type="text/javascript">
-	$(document).ready(function(){
-		
-	});
-	</script>
 	</head>
 	<body>
 		<section>
