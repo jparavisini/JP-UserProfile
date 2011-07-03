@@ -122,7 +122,11 @@ switch ($action) {
 	case 'deleteconfirm':
 		$page_title = 'Goodbye!';
 		$user = new UserProfile();
-		$content = $user->deleteUserConfirm($resource,$params);
+		if ( $user->deleteUserConfirm($resource,$params)) {
+		$content = "Successfully Deleted Account.";
+		} else {
+                $content = "Something went wrong.";
+		}
 		break;
 		
 	case 'forgotid':

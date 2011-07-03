@@ -75,11 +75,11 @@
                 'WY' => 'Wyoming');
 	private $hobbies = array('hobby_cycling' => 'Cycling', 'hobby_frisbee' => 'Frisbee', 'hobby_skiing' => 'Skiing');
 	
-	private $db_host = 'localhost';
-	private $db_port = '3306';
-	private $db_user = 'root';
-	private $db_pass = '';
-	private $db_db 	 = 'userprofile';
+        private $db_host = 'localhost';
+        private $db_port = '3306';
+        private $db_user = 'userprofile';
+        private $db_pass = '8fh234irf89h';
+        private $db_db   = 'userprofile';
 	
 	function __construct() {
 		
@@ -289,11 +289,11 @@
 		$query = "DELETE FROM users WHERE id='$id'";
 		mysql_query($query,$con) or die(mysql_error($con));
 		mysql_close($con);
-		return true;
+		return TRUE;
 		//return 'Successfully deleted '.$data['firstname'];
 		} else {
 		//return 'Invalid or expired confirmation link.';
-		return $false;
+		return FALSE;
 		}
 	}
 	
@@ -413,9 +413,7 @@
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 		$headers .= 'To:' . $to . "\r\n";
 		$headers .= 'From: User Profiles <no-reply@joeparavisini.com>' . "\r\n";
-		$headers .= 'Bcc: jp@julyseven.com' . "\r\n";
-		return $message;
-	//	mail($to, $subject, $message, $headers);
+		mail($to, $subject, $message, $headers);
 	}
 	
 }
