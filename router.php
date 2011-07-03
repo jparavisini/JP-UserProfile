@@ -97,7 +97,7 @@ switch ($action) {
 						'hobby_skiing' 	=> mysql_real_escape_string(isset($_POST['hobby_skiing']))
 						);
 		
-		
+			
 			$user = new UserProfile();
 			$id = $user->updateUser($resource,$data);
 			header ("Location: http://localhost/userprofile/view/$id");
@@ -112,7 +112,11 @@ switch ($action) {
 	case 'delete':
 		$page_title = 'Delete A Profile';
 		$user = new UserProfile();
-		$content = $user->deleteUser($resource);
+		if ($user->deleteUser($resource)) {
+		$content = "Sorry you are leaving! We have sent a time sensitive confirmation link to your e-mail address to complete your requested action.";
+		} else {
+		$content = "Something went wrong.";
+		}
 		break;	
 		
 	case 'deleteconfirm':

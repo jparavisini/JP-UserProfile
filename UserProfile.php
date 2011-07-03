@@ -155,7 +155,21 @@
 		$content .= '<strong>Gender:</strong>'.$results['sex'].'<br>';
 		$content .= '<strong>City:</strong>'.$results['city'].'<br>';
 		$content .= '<strong>State:</strong>'.$results['state'].'<br>';
-		$content .= '<strong>Hobbies:</strong>'.$results['hobby_cycling'].'</p>';
+		$content .= '<strong>Comments:</strong>'.$results['comments'].'<br>';
+
+		$hobbies = array();
+		if ($results['hobby_cycling']) {
+		$hobbies[] = "Cycling";
+		}
+		if ($results['hobby_frisbee']) {
+		$hobbies[] = "Frisbee";
+		}
+		if ($results['hobby_skiing']) {
+		$hobbies[] = "Skiing";
+		}
+		$hobbylist = implode(', ', $hobbies);
+		$content .= '<strong>Hobbies: </strong>'.$hobbylist;
+		$content .= '</p>';
 		mysql_close($con);
 		
 		return $content;
@@ -285,7 +299,7 @@
 	
 	/**
 	 * userForm
-	 *
+	 * The world's messiest form generator. 
 	 * @param array $data
 	 * @return boolean
 	 * @author Joe Paravisini
@@ -293,6 +307,7 @@
 	public function userForm() {
 	$numargs = func_num_args();
 	if ($numargs > 0) {
+		$data = func_get_arg(0);
 		$action = '/userprofile/edit/'. $data['id'];
 		$firstname = $data['firstname'];
 		$lastname = $data['lastname'];
@@ -305,8 +320,7 @@
 		$hobby_frisbee = $data['hobby_frisbee'];
 		$hobby_skiing = $data['hobby_skiing'];
 		
-		$content = "
-			<form action='$action' method='POST'>
+		$content = "<form action='$action' method='POST'>
 			<label for='firstname'>First Name: </label><input type='text' name='firstname' id='firstname' value='$firstname'><br>
 			<label for='lastname'>Last Name: </label><input type='text' name='lastname' id='lastname' value='$lastname'><br>
 			<label for='email'>E-Mail Address: </label><input type='text' name='email' id='email' value='$email'><br>";
@@ -332,30 +346,32 @@
 				$content .= "<option value='$code'>$label</option> ";
 			}
 		}
-		$content .= "
-			</select><br>
+		$content .= "</select><br>
 			<label for='comments'>Comments</label><textarea name='comments' id='comments'>$comments</textarea><br>
 			<label>Hobbies</label>
 			<div class='checkbox'>";
-
-		$content .="	<input type='checkbox' name='hobby_cycling' id='hobby_cycling' > <label for='hobby_cycling'>Cycling</label><br>
-			<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee'> <label for='hobby_frisbee'>Frisbee</label><br>
-			<input type='checkbox' name='hobby_skiing' id='hobby_skiing'> <label for='hobby_skiing'>Skiing</label><br></div>
-			<br class='clear'>
+		
+		if ($hobby_cycling) {
+		$content .="<input type='checkbox' name='hobby_cycling' id='hobby_cycling' checked> <label for='hobby_cycling'>Cycling</label><br>";
+		} else {
+				$content .="<input type='checkbox' name='hobby_cycling' id='hobby_cycling'> <label for='hobby_cycling'>Cycling</label><br>";
+		}
+		if ($hobby_frisbee) {
+		$content .="<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee' checked> <label for='hobby_frisbee'>Frisbee</label><br>";
+		} else {
+				$content .="<input type='checkbox' name='hobby_frisbee' id='hobby_frisbee'> <label for='hobby_frisbee'>Frisbee</label><br>";
+		}		
+		if ($hobby_skiing) {
+		$content .="<input type='checkbox' name='hobby_skiing' id='hobby_skiing' checked> <label for='hobby_skiing'>Skiing</label><br>";
+		} else {
+				$content .="<input type='checkbox' name='hobby_skiing' id='hobby_skiing'> <label for='hobby_skiing'>Skiing</label><br>";
+		}
+		
+		$content .="</div><br class='clear'>
 			<input type='submit' value='Submit'>
 			</form><br><br>";
 	} else {
 		$action = '/userprofile/new/';
-		$firstname = '';
-		$lastname = '';
-		$email = '';
-		$sex = '';
-		$city = '';
-		$state = '';
-		$comments = '';
-		$hobby_cycling = '';
-		$hobby_frisbee = '';
-		$hobby_skiing = '';
 		$content = "
 			<form action='$action' method='POST'>
 			<label for='firstname'>First Name: </label><input type='text' name='firstname' id='firstname'><br>
