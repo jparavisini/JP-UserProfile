@@ -189,7 +189,7 @@
 		$sql = mysql_query($query) or die(mysql_error());
 		$results = mysql_fetch_assoc($sql);
 		return $results;
-		}
+	}
 	
 	/**
 	 * getAllUsersData
@@ -226,16 +226,16 @@
 		$con = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
 		mysql_selectdb($this->db_db, $con);
 		
-		$this->firstname = $data['firstname'];
-		$this->lastname = $data['lastname']; 
-		$this->email = $data['email'];
-		$this->sex = $data['sex']; 
-		$this->city = $data['city']; 
-		$this->state = $data['state']; 
-		$this->comments = $data['comments'];
-		$this->hobby_cycling = $data['hobby_cycling']; 
-		$this->hobby_frisbee = $data['hobby_frisbee']; 
-		$this->hobby_skiing = $data['hobby_skiing'];
+		$this->firstname = mysql_real_escape_string($data['firstname']);
+		$this->lastname = mysql_real_escape_string($data['lastname']); 
+		$this->email = mysql_real_escape_string($data['email']);
+		$this->sex = mysql_real_escape_string($data['sex']); 
+		$this->city = mysql_real_escape_string($data['city']);
+		$this->state = mysql_real_escape_string($data['state']);
+		$this->comments = mysql_real_escape_string($data['comments']);
+		$this->hobby_cycling = mysql_real_escape_string($data['hobby_cycling']); 
+		$this->hobby_frisbee = mysql_real_escape_string($data['hobby_frisbee']); 
+		$this->hobby_skiing = mysql_real_escape_string($data['hobby_skiing']);
 
 		$query = "UPDATE users SET firstname='$this->firstname',
 		lastname='$this->lastname',
