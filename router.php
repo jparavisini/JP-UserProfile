@@ -57,7 +57,7 @@ switch ($action) {
 		
 			$user = new UserProfile();
 			$id = $user->createUser($data);
-			header ("Location: http://localhost/userprofile/view/$id");
+			header ("Location: http://joeparavisini.com/userprofile/view/$id");
 			}
 		} elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
 		$user = new UserProfile();
@@ -100,7 +100,7 @@ switch ($action) {
 			
 			$user = new UserProfile();
 			$id = $user->updateUser($resource,$data);
-			header ("Location: http://localhost/userprofile/view/$id");
+			header ("Location: http://joeparavisini.com/userprofile/view/$id");
 			}
 		} elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
 		$user = new UserProfile();

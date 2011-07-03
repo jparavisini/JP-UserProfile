@@ -183,8 +183,8 @@
 	 * @author Joe Paravisini
 	 */
 	public function getUserDataArray($id) {
-		mysql_connect('localhost', 'root');
-		mysql_selectdb('userprofile');
+		mysql_connect($this->db_host, $this->db_user, $this->db_pass);
+		mysql_selectdb($this->db_db);
 		$query = "SELECT * FROM users WHERE id=$id LIMIT 1";
 		$sql = mysql_query($query) or die(mysql_error());
 		$results = mysql_fetch_assoc($sql);
